@@ -1,7 +1,7 @@
 #name "TmxMenu"
 #author "skybaxrider"
 #category "MainMenu"
-string version = "1.0.0";
+string version = "1.1.0";
 
 #include "Icons.as"
 
@@ -132,12 +132,12 @@ string CreateManialink()
     <quad id="tmxmenu-framemodel-tracklistitem-background" size="118 5" bgcolor="cccF" opacity="0.0" scriptevents="1" />
 </framemodel>
 <frame id="tmxmenu-global" pos="0 -3">
-    <frame id="tmxmenu-header" posn="-145 67" z-index="6">
+    <frame id="tmxmenu-header" posn="-145 68" z-index="6">
         <label id="tmxmenu-header-title" style="BgMainMenuTitleHeader" posn="2 -2" text="$i$FFFTrackMania.$9fcExchange" />
         <label id="tmxmenu-header-subtitle" style="TextSubTitle2" posn="3 -7" text="$i$cccPlay tracks from the track-sharing website" />
         <quad id="tmxmenu-header-background" style="Bgs1" substyle="BgList" size="85 12" />
     </frame>
-    <frame id="tmxmenu-navbar" posn="-145 54" z-index="6">
+    <frame id="tmxmenu-navbar" posn="-145 55" z-index="6">
         <frame id="tmxmenu-navbar-navitemlist" posn="1 -7">
             <frameinstance id="tmxmenu-navbar-navitemlist-00" posn="0 0" modelid="tmxmenu-framemodel-navitem" />
             <frameinstance id="tmxmenu-navbar-navitemlist-01" posn="0 -5" modelid="tmxmenu-framemodel-navitem" />
@@ -163,9 +163,9 @@ string CreateManialink()
         </frame>
         <label id="tmxmenu-navbar-header-title" posn="1.5 -2" style="BgMainMenuTitleHeader" textsize="2" textprefix="$fff$i" text="Track Search" />
         <quad id="tmxmenu-navbar-header-hr" size="38 0.5" posn="1 -6" bgcolor="ccc8" />
-        <quad id="tmxmenu-navbar-background" style="Bgs1" substyle="BgList" size="40 115" />
+        <quad id="tmxmenu-navbar-background" style="Bgs1" substyle="BgList" size="40 120" />
     </frame>
-    <frame id="tmxmenu-body" posn="-103 54" z-index="6">
+    <frame id="tmxmenu-body" posn="-103 55" z-index="6">
         <frame id="tmxmenu-body-buttonlist" posn="1 -14">
             <frameinstance id="tmxmenu-body-buttonlist-00" posn="0 0"   modelid="tmxmenu-framemodel-tracklistitem" />
             <frameinstance id="tmxmenu-body-buttonlist-01" posn="0 -5"  modelid="tmxmenu-framemodel-tracklistitem" />
@@ -190,23 +190,28 @@ string CreateManialink()
         </frame>
         <label id="tmxmenu-body-header-searchname" posn="1 -1.5" style="BgMainMenuTitleHeader" textsize="4" textprefix="$fff$t" text="" />
         <label id="tmxmenu-body-header-searchdescription" posn="5 -6.5" textfont="GameFontRegular" textsize="1" textprefix="$fff" text="" />
+        <label id="tmxmenu-body-header-refresh" posn="116.5 -3.5" valign="center" halign="center" textfont="GameFontRegular" textsize="2" textprefix="$z$ccc" text="" scriptevents="1" />
         <label id="tmxmenu-body-header-col-trackname" posn="1.5 -10" textfont="GameFontSmall" textsize="1"  text="$z$i$cccTrackname" />
         <label id="tmxmenu-body-header-col-author" posn="48.5 -10" textfont="GameFontSmall" textsize="1"  text="$z$i$cccAuthor" />
         <label id="tmxmenu-body-header-col-length" posn="88.5 -10" textfont="GameFontSmall" textsize="1"  text="$z$i$cccLength" />
         <label id="tmxmenu-body-header-col-awards" posn="108.5 -10" textfont="GameFontSmall" textsize="1"  text="$z$i$ccc🏆" />
         <quad id="tmxmenu-body-header-hr" size="118 0.5" posn="1 -13" bgcolor="ccc8" />
-        <quad id="tmxmenu-body-background" style="Bgs1" substyle="BgList" size="120 115" />
+        <label id="tmxmenu-body-footer-pageprev" posn="102 -116.5" valign="center" halign="center" textfont="GameFontSmall" textsize="2" textprefix="$z$i$w$o$ccc" text="‹" scriptevents="1" />
+        <label id="tmxmenu-body-footer-pagenext" posn="115 -116.5" valign="center" halign="center" textfont="GameFontSmall" textsize="2" textprefix="$z$i$w$o$ccc" text="›" scriptevents="1" />
+        <label id="tmxmenu-body-footer-pagetext" posn="108 -116" halign="center" textfont="GameFontSmall" textsize="0.5" textprefix="$z$i$ccc" text="1/20" />
+        <quad id="tmxmenu-body-footer-hr" size="118 0.5" posn="1 -114.5" bgcolor="ccc8" />
+        <quad id="tmxmenu-body-background" style="Bgs1" substyle="BgList" size="120 120" />
     </frame>
-    <frame id="tmxmenu-mapinfo" posn="19 54" z-index="6">
-        <label id="tmxmenu-mapinfo-playmap" posn="35 -105" style="CardButtonMedium" text="Play Map ►" scriptevents="1" />
-        <label id="tmxmenu-mapinfo-details-major" posn="3 -52" textfont="GameFontRegular" textsize="2" textcolor="FFF" text="(map details - major) - Loading...?" />
-        <label id="tmxmenu-mapinfo-details-minor" posn="3 -65" textfont="GameFontRegular" textsize="1" textcolor="FFF" text="(map details - minor) - Loading...?" />
-        <label id="tmxmenu-mapinfo-tmxlink" posn="3 -62" textfont="GameFontSmall" textsize="0.5" textcolor="ccc" text="(tmx track page) - Loading...?" />
+    <frame id="tmxmenu-mapinfo" posn="19 55" z-index="6">
+        <label id="tmxmenu-mapinfo-playmap" posn="35 -110" style="CardButtonMedium" text="Play Map ►" scriptevents="1" />
+        <label id="tmxmenu-mapinfo-details-major" posn="3 -52" textfont="GameFontRegular" textsize="2" textcolor="FFF" text="" />
+        <label id="tmxmenu-mapinfo-details-minor" posn="3 -65" textfont="GameFontRegular" textsize="1" textcolor="FFF" text="" />
+        <label id="tmxmenu-mapinfo-tmxlink" posn="3 -62" textfont="GameFontSmall" textsize="0.5" textcolor="ccc" text="" />
         <quad id="tmxmenu-mapinfo-screenshot" image="" posn="3 -3" keepratio="Fit" size="67 50" />
-        <quad id="tmxmenu-mapinfo-background" style="Bgs1" substyle="BgList" size="73 115" />
+        <quad id="tmxmenu-mapinfo-background" style="Bgs1" substyle="BgList" size="73 120" />
     </frame>
-    <label id="tmxmenu-label-versionstring" posn="-143 -61.5" textprefix="$i$ccc" text="TmxMenu version ?.?.?" textfont="GameFontSmall" textsize="0.25" opacity="0.5" z-index="5" />
-    <quad id="tmxmenu-quad-background" posn="-150 70" size="247 135" style="Bgs1" substyle="BgTitle" scriptevents="1" z-index="5" />
+    <label id="tmxmenu-label-versionstring" posn="-145 -66" textprefix="$i$ccc" text="TmxMenu version ?.?.?" textfont="GameFontSmall" textsize="0.25" opacity="0.5" z-index="5" />
+    <quad id="tmxmenu-quad-background" posn="-150 70" size="247 140" style="Bgs1" substyle="BgTitle" scriptevents="1" z-index="5" />
     <quad id="tmxmenu-button-leave" image="file://Media/Manialinks/Nadeo/TMNext/Menus/Icons/256x256/Icones_256_icon_cross_oblique.dds"
         size="7 7" class="tmxmenu-image-base" pos="93 66" colorize="FFF" scriptevents="1" z-index="7"
     />
@@ -219,6 +224,8 @@ to bypass Angelscript preprocessor
 */
     #RequireContext CManiaAppTitleLayer
 
+    #Include "MathLib" as ML
+
     #Const C_TmxUrlSearch       "https://trackmania.exchange/mapsearch2/search?api=on&format=xml&"
     #Const C_TmxUrlDownload     "https://trackmania.exchange/tracks/download/"
     #Const C_TmxUrlScreenshot   "https://trackmania.exchange/tracks/screenshot/small/"
@@ -226,6 +233,7 @@ to bypass Angelscript preprocessor
     #Const C_TmxUrlTrackpage    "https://trackmania.exchange/s/tr/"
     #Const C_MapSettings        "<root><setting name=\"S_TimeLimit\" value=\"-1\" type=\"integer\"/><setting name=\"S_ForceLapsNb\" value=\"-1\" type=\"integer\"/></root>"
     #Const C_MapModeScript      "TrackMania/TM_PlayMap_Local"
+    #Const C_MapSearchLimit     "100"
 
     #Struct K_MapInfo {
         Text TmxId;
@@ -247,7 +255,11 @@ to bypass Angelscript preprocessor
     }
 
 declare CHttpRequest G_TmxTracksRequest;
-declare K_MapInfo[] G_Tracks;
+declare K_MapInfo[][Text] G_Tracks;
+declare Integer G_TracksOffsetIndex;
+declare Integer G_CurrentPageNumber;
+declare CMlLabel G_PageText;
+declare CMlLabel G_RefreshLabel;
 declare K_MapInfo G_SelectedMap;
 declare CMlFrame[] G_ButtonListFrames;
 declare Text[] G_ButtonListIds;
@@ -259,9 +271,54 @@ declare CMlControl G_SelectedMapButton;
 declare K_TracksearchInfo[] G_TrackSearches;
 declare K_TracksearchInfo G_CurrentSearch;
 
+Integer GetCurrentMaxPages()
+{
+    declare Integer MaxPages = 0;
+    if (G_Tracks.existskey(G_CurrentSearch.Query))
+    {
+        MaxPages = G_Tracks[G_CurrentSearch.Query].count / G_ButtonListIds.count;
+        if ((G_Tracks[G_CurrentSearch.Query].count % G_ButtonListIds.count) != 0)
+        {
+            MaxPages = MaxPages + 1;
+        }
+    }
+    return MaxPages;
+}
+
+Void SetPageNumber(Integer _PageNumber)
+{
+    declare CMlLabel NextLabel = (Page.GetFirstChild("tmxmenu-body-footer-pagenext") as CMlLabel);
+    declare CMlLabel PrevLabel = (Page.GetFirstChild("tmxmenu-body-footer-pageprev") as CMlLabel);
+    declare Integer MaxPages = GetCurrentMaxPages();
+
+    G_CurrentPageNumber = ML::Min(ML::Max(_PageNumber, 1), MaxPages);
+
+    if (G_CurrentPageNumber <= 1)
+    {
+        PrevLabel.Hide();
+    }
+    else
+    {
+        PrevLabel.Show();
+    }
+
+    if (G_CurrentPageNumber >= MaxPages)
+    {
+        NextLabel.Hide();
+    }
+    else
+    {
+        NextLabel.Show();
+    }
+
+    G_TracksOffsetIndex = ML::Max(G_CurrentPageNumber - 1, 0) * G_ButtonListIds.count;
+    G_PageText.SetText("" ^ G_CurrentPageNumber ^ "/" ^ MaxPages);
+}
+
 Void CreateTmxTracksearchApiRequest(K_TracksearchInfo _Search)
 {
-    G_TmxTracksRequest = Http.CreateGet(C_TmxUrlSearch ^ _Search.Query ^ "&limit=" ^ G_ButtonListFrames.count);
+    G_RefreshLabel.Hide();
+    G_TmxTracksRequest = Http.CreateGet(C_TmxUrlSearch ^ _Search.Query ^ "&limit=" ^ C_MapSearchLimit);
 }
 
 Void SetSelectedMapInfo(K_MapInfo _MapInfo)
@@ -283,7 +340,7 @@ Void SetSelectedMapInfo(K_MapInfo _MapInfo)
     TmxLinkLabel.SetText("$i$l[" ^ C_TmxUrlTrackpage ^ _MapInfo.TmxId ^ "]Trackpage$l");
 }
 
-Void SetButtonList(K_MapInfo[] _MapInfos)
+Void SetButtonList(K_MapInfo[] _MapInfos, Integer _Offset)
 {
     if (G_SelectedMapButton != Null)
     {
@@ -291,7 +348,8 @@ Void SetButtonList(K_MapInfo[] _MapInfos)
     }
     for (Index, 0, G_ButtonListFrames.count-1)
     {
-        if (Index < _MapInfos.count)
+        declare Integer MapInfosOffsetIndex = Index + _Offset;
+        if (MapInfosOffsetIndex < _MapInfos.count)
         {
             G_ButtonListFrames[Index].Show();
             declare CMlLabel TracknameLabel <=> (G_ButtonListFrames[Index].GetFirstChild("tmxmenu-framemodel-tracklistitem-trackname") as CMlLabel);
@@ -299,10 +357,10 @@ Void SetButtonList(K_MapInfo[] _MapInfos)
             declare CMlLabel LengthLabel <=> (G_ButtonListFrames[Index].GetFirstChild("tmxmenu-framemodel-tracklistitem-length") as CMlLabel);
             declare CMlLabel AwardsLabel <=> (G_ButtonListFrames[Index].GetFirstChild("tmxmenu-framemodel-tracklistitem-awards") as CMlLabel);
 
-            TracknameLabel.SetText("$z" ^ _MapInfos[Index].NameSafe ^ "$z");
-            AuthorLabel.SetText("$z" ^ _MapInfos[Index].Author ^ "$z");
-            LengthLabel.SetText("$z" ^ _MapInfos[Index].LengthName ^ "$z");
-            AwardsLabel.SetText("$z" ^ _MapInfos[Index].AwardCount ^ "$z");
+            TracknameLabel.SetText("$z" ^ _MapInfos[MapInfosOffsetIndex].NameSafe ^ "$z");
+            AuthorLabel.SetText("$z" ^ _MapInfos[MapInfosOffsetIndex].Author ^ "$z");
+            LengthLabel.SetText("$z" ^ _MapInfos[MapInfosOffsetIndex].LengthName ^ "$z");
+            AwardsLabel.SetText("$z" ^ _MapInfos[MapInfosOffsetIndex].AwardCount ^ "$z");
         }
         else
         {
@@ -311,9 +369,9 @@ Void SetButtonList(K_MapInfo[] _MapInfos)
     }
 }
 
-Void SetSelectedTrackSearch(K_TracksearchInfo _Search)
+Void SetSelectedTrackSearch(K_TracksearchInfo _Search, Boolean _ForceSearch)
 {
-    if (G_CurrentSearch != _Search)
+    if (G_CurrentSearch != _Search || _ForceSearch)
     {
         declare CMlLabel SearchNameLabel <=> (Page.GetFirstChild("tmxmenu-body-header-searchname") as CMlLabel);
         declare CMlLabel SearchDescriptionLabel <=> (Page.GetFirstChild("tmxmenu-body-header-searchdescription") as CMlLabel);
@@ -323,21 +381,34 @@ Void SetSelectedTrackSearch(K_TracksearchInfo _Search)
         SearchNameLabel.SetText(_Search.NameLong);
         SearchDescriptionLabel.SetText(_Search.Description);
 
-        declare K_MapInfo EmptyInfo;
-        EmptyInfo = K_MapInfo {
-            TmxId = "",
-            Name = "",
-            NameSafe = "",
-            Author = "",
-            MapType = "",
-            Mood = "",
-            DisplayCost = "",
-            LengthName = "",
-            AwardCount = ""
-        };
-        SetSelectedMapInfo(EmptyInfo);
-        SetButtonList([]);
-        CreateTmxTracksearchApiRequest(_Search);
+        if (!G_Tracks.existskey(G_CurrentSearch.Query) || _ForceSearch)
+        {
+            declare K_MapInfo EmptyInfo;
+            EmptyInfo = K_MapInfo {
+                TmxId = "",
+                Name = "",
+                NameSafe = "",
+                Author = "",
+                MapType = "",
+                Mood = "",
+                DisplayCost = "",
+                LengthName = "",
+                AwardCount = ""
+            };
+            SetSelectedMapInfo(EmptyInfo);
+            SetPageNumber(1);
+            SetButtonList([], G_TracksOffsetIndex);
+            CreateTmxTracksearchApiRequest(_Search);
+        }
+        else
+        {
+            SetPageNumber(1);
+            SetButtonList(G_Tracks[G_CurrentSearch.Query], G_TracksOffsetIndex);
+            if (G_Tracks[G_CurrentSearch.Query].count > 1)
+            {
+                SetSelectedMapInfo(G_Tracks[G_CurrentSearch.Query][0]);
+            }
+        }
     }
 }
 
@@ -397,6 +468,8 @@ Void SetSelectedMapButton(CMlControl _SelectedMapControl)
 ***
 declare CMlLabel VersionLabel <=> (Page.GetFirstChild("tmxmenu-label-versionstring") as CMlLabel);
 VersionLabel.SetText("TmxMenu version """ + version + """, created by skybaxrider");
+G_RefreshLabel = (Page.GetFirstChild("tmxmenu-body-header-refresh") as CMlLabel);
+G_RefreshLabel.Hide();
 declare CMlFrame ButtonListFrame <=> (Page.GetFirstChild("tmxmenu-body-buttonlist") as CMlFrame);
 foreach (FrameInstanceControl in ButtonListFrame.Controls)
 {
@@ -413,6 +486,7 @@ foreach (FrameInstanceControl in NavListFrame.Controls)
     G_NavListFrames.add(NavFrame);
     G_NavListIds.add(NavFrame.ControlId);
 }
+G_PageText <=> (Page.GetFirstChild("tmxmenu-body-footer-pagetext") as CMlLabel);
 G_PlayMapButton <=> (Page.GetFirstChild("tmxmenu-mapinfo-playmap") as CMlLabel);
 """ + CreateSearchString() + """
 yield;
@@ -421,6 +495,7 @@ yield;
 ***MainStart***
 ***
 SetNavList(G_TrackSearches);
+SetPageNumber(1);
 yield;
 ***
 
@@ -428,13 +503,20 @@ yield;
 ***
 if (G_TmxTracksRequest != Null && G_TmxTracksRequest.IsCompleted)
 {
-    G_Tracks.clear();
-    declare CParsingDocument BotwDoc = Xml.Parse_Xml(G_TmxTracksRequest.Result);
+    if (G_Tracks.existskey(G_CurrentSearch.Query))
+    {
+        G_Tracks[G_CurrentSearch.Query].clear();
+    }
+    else
+    {
+        G_Tracks[G_CurrentSearch.Query] = [];
+    }
+    declare CParsingDocument RequestDoc = Xml.Parse_Xml(G_TmxTracksRequest.Result);
     G_TmxTracksRequest = Null;
-    declare CParsingNode BotwDocResultsNode = BotwDoc.GetFirstChild("results");
+    declare CParsingNode BotwDocResultsNode = RequestDoc.GetFirstChild("results");
     foreach (TrackInfo in BotwDocResultsNode.Children)
     {
-        G_Tracks.add(K_MapInfo {
+        G_Tracks[G_CurrentSearch.Query].add(K_MapInfo {
             TmxId = TrackInfo.GetFirstChild("TrackID").TextContents,
             Name = TrackInfo.GetFirstChild("GbxMapName").TextContents,
             NameSafe = TrackInfo.GetFirstChild("Name").TextContents,
@@ -446,10 +528,12 @@ if (G_TmxTracksRequest != Null && G_TmxTracksRequest.IsCompleted)
             AwardCount = TrackInfo.GetFirstChild("AwardCount").TextContents
         });
     }
-    SetButtonList(G_Tracks);
-    if (G_Tracks.count > 1)
+    G_RefreshLabel.Show();
+    SetPageNumber(1);
+    SetButtonList(G_Tracks[G_CurrentSearch.Query], G_TracksOffsetIndex);
+    if (G_Tracks[G_CurrentSearch.Query].count > 1)
     {
-        SetSelectedMapInfo(G_Tracks[0]);
+        SetSelectedMapInfo(G_Tracks[G_CurrentSearch.Query][0]);
     }
 }
 
@@ -461,10 +545,10 @@ if (PageIsVisible)
         {
             if (Event.Control.Parent != Null && G_ButtonListIds.exists(Event.Control.Parent.ControlId))
             {
-                declare Integer ButtonIndex = G_ButtonListIds.keyof(Event.Control.Parent.ControlId);
-                if (ButtonIndex < G_Tracks.count)
+                declare Integer ButtonIndex = G_ButtonListIds.keyof(Event.Control.Parent.ControlId) + G_TracksOffsetIndex;
+                if (ButtonIndex < G_Tracks[G_CurrentSearch.Query].count)
                 {
-                    SetSelectedMapInfo(G_Tracks[ButtonIndex]);
+                    SetSelectedMapInfo(G_Tracks[G_CurrentSearch.Query][ButtonIndex]);
                 }
                 SetSelectedMapButton(Event.Control);
             }
@@ -473,7 +557,7 @@ if (PageIsVisible)
                 declare Integer NavIndex = G_NavListIds.keyof(Event.Control.Parent.ControlId);
                 if (NavIndex < G_TrackSearches.count)
                 {
-                    SetSelectedTrackSearch(G_TrackSearches[NavIndex]);
+                    SetSelectedTrackSearch(G_TrackSearches[NavIndex], False);
                 }
                 SetSelectedNavButton(Event.Control);
             }
@@ -487,6 +571,32 @@ if (PageIsVisible)
             else if (Event.ControlId == "tmxmenu-button-leave")
             {
                 HideSelfUILayer();
+            }
+            else if (Event.ControlId == "tmxmenu-body-footer-pageprev")
+            {
+                Event.Control.RelativeScale = 1.0;
+                AnimMgr.Add(Event.Control, "<anim scale=\"1.5\"/>", 100, CAnimManager::EAnimManagerEasing::Linear);
+                SetPageNumber(G_CurrentPageNumber-1);
+                SetButtonList(G_Tracks[G_CurrentSearch.Query], G_TracksOffsetIndex);
+            }
+            else if (Event.ControlId == "tmxmenu-body-footer-pagenext")
+            {
+                Event.Control.RelativeScale = 1.0;
+                AnimMgr.Add(Event.Control, "<anim scale=\"1.5\"/>", 100, CAnimManager::EAnimManagerEasing::Linear);
+                SetPageNumber(G_CurrentPageNumber+1);
+                SetButtonList(G_Tracks[G_CurrentSearch.Query], G_TracksOffsetIndex);
+            }
+            else if (Event.ControlId == "tmxmenu-body-header-refresh")
+            {
+                Event.Control.RelativeScale = 1.0;
+                if (G_Tracks.existskey(G_CurrentSearch.Query))
+                {
+                    SetSelectedTrackSearch(G_CurrentSearch, True);
+                }
+                else
+                {
+                    Event.Control.Hide();
+                }
             }
         }
         else if (Event.Type == CMlScriptEvent::Type::MouseOver)
@@ -509,6 +619,15 @@ if (PageIsVisible)
                     AnimMgr.Add(Event.Control, "<anim opacity=\"0.1\"/>", 100, CAnimManager::EAnimManagerEasing::QuadOut);
                 }
             }
+            else if ((Event.ControlId == "tmxmenu-body-footer-pageprev")
+                    || (Event.ControlId == "tmxmenu-body-footer-pagenext"))
+            {
+                AnimMgr.Add(Event.Control, "<anim scale=\"1.5\"/>", 100, CAnimManager::EAnimManagerEasing::Linear);
+            }
+            else if (Event.ControlId == "tmxmenu-body-header-refresh")
+            {
+                AnimMgr.Add(Event.Control, "<anim scale=\"1.2\"/>", 100, CAnimManager::EAnimManagerEasing::Linear);
+            }
         }
         else if (Event.Type == CMlScriptEvent::Type::MouseOut)
         {
@@ -529,6 +648,12 @@ if (PageIsVisible)
                 {
                     AnimMgr.Add(Event.Control, "<anim opacity=\"0.0\"/>", 100, CAnimManager::EAnimManagerEasing::QuadOut);
                 }
+            }
+            else if ((Event.ControlId == "tmxmenu-body-footer-pageprev")
+                || (Event.ControlId == "tmxmenu-body-footer-pagenext")
+                || (Event.ControlId == "tmxmenu-body-header-refresh"))
+            {
+                AnimMgr.Add(Event.Control, "<anim scale=\"1.0\"/>", 100, CAnimManager::EAnimManagerEasing::Linear);
             }
         }
     }
