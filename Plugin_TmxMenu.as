@@ -1,7 +1,8 @@
 #name "TmxMenu"
 #author "skybaxrider"
 #category "MainMenu"
-string version = "1.1.0";
+#perms "paid"
+string version = "1.2.0";
 
 #include "Icons.as"
 
@@ -12,13 +13,11 @@ void log(string msg)
     print("\\$z[\\$9fcTmxMenu\\$z] " + msg);
 }
 
-string TrackSearchString(string query, string shortName, string longName, string desc)
+string TrackSearchString(string query, string shortName)
 {
     return "G_TrackSearches.add(K_TracksearchInfo {\n"
     + "    Query = \"" + query + "\",\n"
-    + "    NameShort = \"" + shortName + "\",\n"
-    + "    NameLong = \"" + longName + "\",\n"
-    + "    Description = \"" + desc + "\"\n"
+    + "    NameShort = \"" + shortName + "\"\n"
     + "});\n";
 }
 
@@ -27,87 +26,87 @@ string CreateSearchString()
     string search = "";
     if (Search1_Query != "")
     {
-        search += TrackSearchString(Search1_Query, Search1_ShortName, Search1_LongName, Search1_Description);
+        search += TrackSearchString(Search1_Query, Search1_ShortName);
     }
     if (Search2_Query != "")
     {
-        search += TrackSearchString(Search2_Query, Search2_ShortName, Search2_LongName, Search2_Description);
+        search += TrackSearchString(Search2_Query, Search2_ShortName);
     }
     if (Search3_Query != "")
     {
-        search += TrackSearchString(Search3_Query, Search3_ShortName, Search3_LongName, Search3_Description);
+        search += TrackSearchString(Search3_Query, Search3_ShortName);
     }
     if (Search4_Query != "")
     {
-        search += TrackSearchString(Search4_Query, Search4_ShortName, Search4_LongName, Search4_Description);
+        search += TrackSearchString(Search4_Query, Search4_ShortName);
     }
     if (Search5_Query != "")
     {
-        search += TrackSearchString(Search5_Query, Search5_ShortName, Search5_LongName, Search5_Description);
+        search += TrackSearchString(Search5_Query, Search5_ShortName);
     }
     if (Search6_Query != "")
     {
-        search += TrackSearchString(Search6_Query, Search6_ShortName, Search6_LongName, Search6_Description);
+        search += TrackSearchString(Search6_Query, Search6_ShortName);
     }
     if (Search7_Query != "")
     {
-        search += TrackSearchString(Search7_Query, Search7_ShortName, Search7_LongName, Search7_Description);
+        search += TrackSearchString(Search7_Query, Search7_ShortName);
     }
     if (Search8_Query != "")
     {
-        search += TrackSearchString(Search8_Query, Search8_ShortName, Search8_LongName, Search8_Description);
+        search += TrackSearchString(Search8_Query, Search8_ShortName);
     }
     if (Search9_Query != "")
     {
-        search += TrackSearchString(Search9_Query, Search9_ShortName, Search9_LongName, Search9_Description);
+        search += TrackSearchString(Search9_Query, Search9_ShortName);
     }
     if (Search10_Query != "")
     {
-        search += TrackSearchString(Search10_Query, Search10_ShortName, Search10_LongName, Search10_Description);
+        search += TrackSearchString(Search10_Query, Search10_ShortName);
     }
     if (Search11_Query != "")
     {
-        search += TrackSearchString(Search11_Query, Search11_ShortName, Search11_LongName, Search11_Description);
+        search += TrackSearchString(Search11_Query, Search11_ShortName);
     }
     if (Search12_Query != "")
     {
-        search += TrackSearchString(Search12_Query, Search12_ShortName, Search12_LongName, Search12_Description);
+        search += TrackSearchString(Search12_Query, Search12_ShortName);
     }
     if (Search13_Query != "")
     {
-        search += TrackSearchString(Search13_Query, Search13_ShortName, Search13_LongName, Search13_Description);
+        search += TrackSearchString(Search13_Query, Search13_ShortName);
     }
     if (Search14_Query != "")
     {
-        search += TrackSearchString(Search14_Query, Search14_ShortName, Search14_LongName, Search14_Description);
+        search += TrackSearchString(Search14_Query, Search14_ShortName);
     }
     if (Search15_Query != "")
     {
-        search += TrackSearchString(Search15_Query, Search15_ShortName, Search15_LongName, Search15_Description);
+        search += TrackSearchString(Search15_Query, Search15_ShortName);
     }
     if (Search16_Query != "")
     {
-        search += TrackSearchString(Search16_Query, Search16_ShortName, Search16_LongName, Search16_Description);
+        search += TrackSearchString(Search16_Query, Search16_ShortName);
     }
     if (Search17_Query != "")
     {
-        search += TrackSearchString(Search17_Query, Search17_ShortName, Search17_LongName, Search17_Description);
+        search += TrackSearchString(Search17_Query, Search17_ShortName);
     }
     if (Search18_Query != "")
     {
-        search += TrackSearchString(Search18_Query, Search18_ShortName, Search18_LongName, Search18_Description);
+        search += TrackSearchString(Search18_Query, Search18_ShortName);
     }
     if (Search19_Query != "")
     {
-        search += TrackSearchString(Search19_Query, Search19_ShortName, Search19_LongName, Search19_Description);
+        search += TrackSearchString(Search19_Query, Search19_ShortName);
     }
     if (Search20_Query != "")
     {
-        search += TrackSearchString(Search20_Query, Search20_ShortName, Search20_LongName, Search20_Description);
+        search += TrackSearchString(Search20_Query, Search20_ShortName);
     }
     if (Search21_Query != "")
     {
-        search += TrackSearchString(Search21_Query, Search21_ShortName, Search21_LongName, Search21_Description);
+        search += TrackSearchString(Search21_Query, Search21_ShortName);
     }
     return search;
 }
@@ -188,8 +187,6 @@ string CreateManialink()
             <frameinstance id="tmxmenu-body-buttonlist-18" posn="0 -90" modelid="tmxmenu-framemodel-tracklistitem" />
             <frameinstance id="tmxmenu-body-buttonlist-19" posn="0 -95" modelid="tmxmenu-framemodel-tracklistitem" />
         </frame>
-        <label id="tmxmenu-body-header-searchname" posn="1 -1.5" style="BgMainMenuTitleHeader" textsize="4" textprefix="$fff$t" text="" />
-        <label id="tmxmenu-body-header-searchdescription" posn="5 -6.5" textfont="GameFontRegular" textsize="1" textprefix="$fff" text="" />
         <label id="tmxmenu-body-header-refresh" posn="116.5 -3.5" valign="center" halign="center" textfont="GameFontRegular" textsize="2" textprefix="$z$ccc" text="" scriptevents="1" />
         <label id="tmxmenu-body-header-col-trackname" posn="1.5 -10" textfont="GameFontSmall" textsize="1"  text="$z$i$cccTrackname" />
         <label id="tmxmenu-body-header-col-author" posn="48.5 -10" textfont="GameFontSmall" textsize="1"  text="$z$i$cccAuthor" />
@@ -250,8 +247,6 @@ to bypass Angelscript preprocessor
     #Struct K_TracksearchInfo {
         Text Query;
         Text NameShort;
-        Text NameLong;
-        Text Description;
     }
 
 declare CHttpRequest G_TmxTracksRequest;
@@ -373,13 +368,7 @@ Void SetSelectedTrackSearch(K_TracksearchInfo _Search, Boolean _ForceSearch)
 {
     if (G_CurrentSearch != _Search || _ForceSearch)
     {
-        declare CMlLabel SearchNameLabel <=> (Page.GetFirstChild("tmxmenu-body-header-searchname") as CMlLabel);
-        declare CMlLabel SearchDescriptionLabel <=> (Page.GetFirstChild("tmxmenu-body-header-searchdescription") as CMlLabel);
-
         G_CurrentSearch = _Search;
-
-        SearchNameLabel.SetText(_Search.NameLong);
-        SearchDescriptionLabel.SetText(_Search.Description);
 
         if (!G_Tracks.existskey(G_CurrentSearch.Query) || _ForceSearch)
         {
@@ -721,190 +710,106 @@ CGameUILayer@ FindOrCreateUILayer(CGameManiaAppTitle@ maniaAppTitle, string sear
 
 [Setting name="Search 1 Short Name"]
 string Search1_ShortName = "Best of the Week";
-[Setting name="Search 1 Long Name"]
-string Search1_LongName = "Best of the Week";
-[Setting name="Search 1 Description"]
-string Search1_Description = "Uploaded in the past 7 days sorted by awards (most)";
 [Setting name="Search 1 Query" description="Set to TMX API search params. \"page\" and \"limit\" should not be specified."]
 string Search1_Query = "mode=4&priord=8";
 
 [Setting name="Search 2 Short Name"]
 string Search2_ShortName = "Latest Tracks";
-[Setting name="Search 2 Long Name"]
-string Search2_LongName = "Latest Tracks Uploaded";
-[Setting name="Search 2 Description"]
-string Search2_Description = "Tracks sorted by upload time (newest)";
 [Setting name="Search 2 Query" description="Set to TMX API search params. \"page\" and \"limit\" should not be specified."]
-string Search2_Query = "priord=2";
+string Search2_Query = "priord=2&mode=2";
 
 [Setting name="Search 3 Short Name"]
-string Search3_ShortName = "Latest Fullspeed";
-[Setting name="Search 3 Long Name"]
-string Search3_LongName = "Latest Fullspeed Tracks";
-[Setting name="Search 3 Description"]
-string Search3_Description = "Fullspeed tracks sorted by upload time (newest)";
+string Search3_ShortName = "Recently Awarded";
 [Setting name="Search 3 Query" description="Set to TMX API search params. \"page\" and \"limit\" should not be specified."]
-string Search3_Query = "priord=2&style=2";
+string Search3_Query = "mode=3&priord=6";
 
 [Setting name="Search 4 Short Name"]
-string Search4_ShortName = "Latest Tech";
-[Setting name="Search 4 Long Name"]
-string Search4_LongName = "Latest Tech Tracks";
-[Setting name="Search 4 Description"]
-string Search4_Description = "Tech tracks sorted by upload time (newest)";
+string Search4_ShortName = "Recently Active";
 [Setting name="Search 4 Query" description="Set to TMX API search params. \"page\" and \"limit\" should not be specified."]
-string Search4_Query = "priord=2&style=3";
+string Search4_Query = "priord=6";
 
 [Setting name="Search 5 Short Name"]
-string Search5_ShortName = "Latest RPG";
-[Setting name="Search 5 Long Name"]
-string Search5_LongName = "Latest RPG Tracks";
-[Setting name="Search 5 Description"]
-string Search5_Description = "RPG tracks sorted by upload time (newest)";
+string Search5_ShortName = "RPG Tracks";
 [Setting name="Search 5 Query" description="Set to TMX API search params. \"page\" and \"limit\" should not be specified."]
 string Search5_Query = "priord=2&style=4";
 
 [Setting name="Search 6 Short Name"]
-string Search6_ShortName = "Latest LOL";
-[Setting name="Search 6 Long Name"]
-string Search6_LongName = "Latest LOL Tracks";
-[Setting name="Search 6 Description"]
-string Search6_Description = "LOL tracks sorted by upload time (newest)";
+string Search6_ShortName = "LOL Tracks";
 [Setting name="Search 6 Query" description="Set to TMX API search params. \"page\" and \"limit\" should not be specified."]
 string Search6_Query = "priord=2&style=5";
 
 [Setting name="Search 7 Short Name"]
-string Search7_ShortName = "Latest PF";
-[Setting name="Search 7 Long Name"]
-string Search7_LongName = "Latest Press Forward Tracks";
-[Setting name="Search 7 Description"]
-string Search7_Description = "Press forward tracks sorted by upload time (newest)";
+string Search7_ShortName = "PF Tracks";
 [Setting name="Search 7 Query" description="Set to TMX API search params. \"page\" and \"limit\" should not be specified."]
 string Search7_Query = "priord=2&style=6";
 
 [Setting name="Search 8 Short Name"]
-string Search8_ShortName = "Latest Speedtech";
-[Setting name="Search 8 Long Name"]
-string Search8_LongName = "Latest Speedtech Tracks";
-[Setting name="Search 8 Description"]
-string Search8_Description = "Speedtech tracks sorted by upload time (newest)";
+string Search8_ShortName = "Speedtech Tracks";
 [Setting name="Search 8 Query" description="Set to TMX API search params. \"page\" and \"limit\" should not be specified."]
 string Search8_Query = "priord=2&style=7";
 
 [Setting name="Search 9 Short Name"]
-string Search9_ShortName = "Latest Multilap";
-[Setting name="Search 9 Long Name"]
-string Search9_LongName = "Latest Multilap Tracks";
-[Setting name="Search 9 Description"]
-string Search9_Description = "Multilap tracks sorted by upload time (newest)";
+string Search9_ShortName = "Multilap Tracks";
 [Setting name="Search 9 Query" description="Set to TMX API search params. \"page\" and \"limit\" should not be specified."]
 string Search9_Query = "priord=2&style=8";
 
 [Setting name="Search 10 Short Name"]
-string Search10_ShortName = "Latest Offroad";
-[Setting name="Search 10 Long Name"]
-string Search10_LongName = "Latest Offroad Tracks";
-[Setting name="Search 10 Description"]
-string Search10_Description = "Offroad tracks sorted by upload time (newest)";
+string Search10_ShortName = "Offroad Tracks";
 [Setting name="Search 10 Query" description="Set to TMX API search params. \"page\" and \"limit\" should not be specified."]
 string Search10_Query = "priord=2&style=9";
 
 [Setting name="Search 11 Short Name"]
-string Search11_ShortName = "Latest Trial";
-[Setting name="Search 11 Long Name"]
-string Search11_LongName = "Latest Trial Tracks";
-[Setting name="Search 11 Description"]
-string Search11_Description = "Trial tracks sorted by upload time (newest)";
+string Search11_ShortName = "Trial Tracks";
 [Setting name="Search 11 Query" description="Set to TMX API search params. \"page\" and \"limit\" should not be specified."]
 string Search11_Query = "priord=2&style=10";
 
 [Setting name="Search 12 Short Name"]
-string Search12_ShortName = "";
-[Setting name="Search 12 Long Name"]
-string Search12_LongName = "";
-[Setting name="Search 12 Description"]
-string Search12_Description = "";
+string Search12_ShortName = "Race Tracks";
 [Setting name="Search 12 Query" description="Set to TMX API search params. \"page\" and \"limit\" should not be specified."]
-string Search12_Query = "";
+string Search12_Query = "priord=2&style=1";
 
 [Setting name="Search 13 Short Name"]
-string Search13_ShortName = "";
-[Setting name="Search 13 Long Name"]
-string Search13_LongName = "";
-[Setting name="Search 13 Description"]
-string Search13_Description = "";
+string Search13_ShortName = "Fullspeed Tracks";
 [Setting name="Search 13 Query" description="Set to TMX API search params. \"page\" and \"limit\" should not be specified."]
-string Search13_Query = "";
+string Search13_Query = "priord=2&style=2";
 
 [Setting name="Search 14 Short Name"]
-string Search14_ShortName = "";
-[Setting name="Search 14 Long Name"]
-string Search14_LongName = "";
-[Setting name="Search 14 Description"]
-string Search14_Description = "";
+string Search14_ShortName = "Tech Tracks";
 [Setting name="Search 14 Query" description="Set to TMX API search params. \"page\" and \"limit\" should not be specified."]
-string Search14_Query = "";
+string Search14_Query = "priord=2&style=3";
 
 [Setting name="Search 15 Short Name"]
 string Search15_ShortName = "";
-[Setting name="Search 15 Long Name"]
-string Search15_LongName = "";
-[Setting name="Search 15 Description"]
-string Search15_Description = "";
 [Setting name="Search 15 Query" description="Set to TMX API search params. \"page\" and \"limit\" should not be specified."]
 string Search15_Query = "";
 
 [Setting name="Search 16 Short Name"]
 string Search16_ShortName = "";
-[Setting name="Search 16 Long Name"]
-string Search16_LongName = "";
-[Setting name="Search 16 Description"]
-string Search16_Description = "";
 [Setting name="Search 16 Query" description="Set to TMX API search params. \"page\" and \"limit\" should not be specified."]
 string Search16_Query = "";
 
 [Setting name="Search 17 Short Name"]
 string Search17_ShortName = "";
-[Setting name="Search 17 Long Name"]
-string Search17_LongName = "";
-[Setting name="Search 17 Description"]
-string Search17_Description = "";
 [Setting name="Search 17 Query" description="Set to TMX API search params. \"page\" and \"limit\" should not be specified."]
 string Search17_Query = "";
 
 [Setting name="Search 18 Short Name"]
 string Search18_ShortName = "";
-[Setting name="Search 18 Long Name"]
-string Search18_LongName = "";
-[Setting name="Search 18 Description"]
-string Search18_Description = "";
 [Setting name="Search 18 Query" description="Set to TMX API search params. \"page\" and \"limit\" should not be specified."]
 string Search18_Query = "";
 
 [Setting name="Search 19 Short Name"]
 string Search19_ShortName = "";
-[Setting name="Search 19 Long Name"]
-string Search19_LongName = "";
-[Setting name="Search 19 Description"]
-string Search19_Description = "";
 [Setting name="Search 19 Query" description="Set to TMX API search params. \"page\" and \"limit\" should not be specified."]
 string Search19_Query = "";
 
 [Setting name="Search 20 Short Name"]
 string Search20_ShortName = "";
-[Setting name="Search 20 Long Name"]
-string Search20_LongName = "";
-[Setting name="Search 20 Description"]
-string Search20_Description = "";
 [Setting name="Search 20 Query" description="Set to TMX API search params. \"page\" and \"limit\" should not be specified."]
 string Search20_Query = "";
 
 [Setting name="Search 21 Short Name"]
 string Search21_ShortName = "";
-[Setting name="Search 21 Long Name"]
-string Search21_LongName = "";
-[Setting name="Search 21 Description"]
-string Search21_Description = "";
 [Setting name="Search 21 Query" description="Set to TMX API search params. \"page\" and \"limit\" should not be specified."]
 string Search21_Query = "";
 
