@@ -842,19 +842,14 @@ void Main()
 {
     log("Initializing TmxMenu version [" + version + "]");
 
-    while (true)
+    auto maniaAppTitle = TryGetManiaAppTitle();
+    if (maniaAppTitle !is null)
     {
-        log("Entering TmxMenu::Main()::while(true)");
-        auto maniaAppTitle = TryGetManiaAppTitle();
-        if (maniaAppTitle !is null)
-        {
-            auto uiLayer = FindOrCreateUILayer(maniaAppTitle, layerId);
-            uiLayer.ManialinkPage = CreateManialink();
-            uiLayer.IsVisible = false;
-        }
-        sleep(1000);
-        break;
+        auto uiLayer = FindOrCreateUILayer(maniaAppTitle, layerId);
+        uiLayer.ManialinkPage = CreateManialink();
+        uiLayer.IsVisible = false;
     }
+    sleep(1000);
 
     log("Exit TmxMenu::main()");
 }
