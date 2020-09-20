@@ -210,8 +210,8 @@ string CreateManialink()
     </frame>
     <frame id="tmxmenu-mapinfo" posn="19 55" z-index="6">
         <label id="tmxmenu-mapinfo-playmap" posn="35 -110" style="CardButtonMedium" text="Play Map ►" scriptevents="1" />
-        <label id="tmxmenu-mapinfo-details-major" posn="3 -52" textfont="GameFontRegular" textsize="2" textcolor="FFF" text="" />
-        <label id="tmxmenu-mapinfo-details-minor" posn="3 -65" textfont="GameFontRegular" textsize="1" textcolor="FFF" text="" />
+        <label id="tmxmenu-mapinfo-details-major" posn="3 -52" size="67 10" textfont="GameFontRegular" textsize="2" textcolor="FFF" text="" />
+        <label id="tmxmenu-mapinfo-details-minor" posn="3 -65" size="67 45" textfont="GameFontRegular" textsize="1" textcolor="FFF" text="" />
         <label id="tmxmenu-mapinfo-tmxlink" posn="3 -62" textfont="GameFontSmall" textsize="0.5" textcolor="ccc" text="" />
         <quad id="tmxmenu-mapinfo-screenshot" class="tmxmenu-image-base" image="" posn="36.5 -27.5" size="67 49" />
         <quad id="tmxmenu-mapinfo-background" style="Bgs1" substyle="BgList" size="73 120" />
@@ -231,6 +231,7 @@ to bypass Angelscript preprocessor
     #RequireContext CManiaAppTitleLayer
 
     #Include "MathLib" as ML
+    #Include "TextLib" as TL
 
     #Const C_TmxUrlSearch       "https://trackmania.exchange/mapsearch2/search?api=on&format=xml&"
     #Const C_TmxUrlDownload     "https://trackmania.exchange/tracks/download/"
@@ -240,6 +241,53 @@ to bypass Angelscript preprocessor
     #Const C_MapSettings        "<root><setting name=\"S_TimeLimit\" value=\"-1\" type=\"integer\"/><setting name=\"S_ForceLapsNb\" value=\"-1\" type=\"integer\"/></root>"
     #Const C_MapModeScript      "TrackMania/TM_PlayMap_Local"
     #Const C_MapSearchLimit     "100"
+    #Const C_TmxTagMapping [
+        "1" => "Race",
+        "2" => "Fullspeed",
+        "3" => "Tech",
+        "4" => "RPG",
+        "5" => "LOL",
+        "6" => "Press Forward",
+        "7" => "SpeedTech",
+        "8" => "Multilap",
+        "9" => "Offroad",
+        "10" => "Trial",
+        "11" => "ZrT",
+        "12" => "SpeedFun",
+        "13" => "Competitive",
+        "14" => "Ice",
+        "15" => "Dirt",
+        "16" => "Stunt",
+        "17" => "Reactor",
+        "18" => "Platform",
+        "19" => "Slow Motion",
+        "20" => "Bumper",
+        "21" => "Fragile",
+        "22" => "Scenery",
+        "23" => "Kacky",
+        "24" => "Endurance",
+        "25" => "Mini",
+        "26" => "Remake",
+        "27" => "Mixed",
+        "28" => "Nascar",
+        "29" => "SpeedDrift",
+        "30" => "Minigame",
+        "31" => "Obstacle",
+        "32" => "Transitional",
+        "33" => "Grass"
+    ]
+    #Const C_TmxTagColors [
+        "9" => "$a11",
+        "11" => "$090",
+        "14" => "$0f9",
+        "15" => "$c44",
+        "17" => "$f90",
+        "19" => "$00c",
+        "20" => "$c00",
+        "21" => "$piss",
+        "30" => "$f09",
+        "33" => "$0c0"
+    ]
 
     #Struct K_MapInfo {
         Text TmxId;
@@ -252,6 +300,7 @@ to bypass Angelscript preprocessor
         Text LengthName;
         Text AwardCount;
         Text HasScreenshot;
+        Text TagNames;
     }
 
     #Struct K_TracksearchInfo {
@@ -275,6 +324,50 @@ declare CMlControl G_SelectedNavButton;
 declare CMlControl G_SelectedMapButton;
 declare K_TracksearchInfo[] G_TrackSearches;
 declare K_TracksearchInfo G_CurrentSearch;
+
+Text ConvertTagNumbersToText(Text _Tags)
+{
+    declare Text ConvertedTags = "";
+    declare TagNumbers = TL::Split(",", _Tags);
+    declare Boolean FirstTag = True;
+    foreach (TagNum in TagNumbers)
+    {
+        if (!FirstTag)
+        {
+            ConvertedTags ^= "$ccc, ";
+        }
+        FirstTag = False;
+
+        declare CleanTagNum = TL::Replace(TagNum, " ", "");
+        if (C_TmxTagMapping.existskey(CleanTagNum))
+        {
+            if (C_TmxTagColors.existskey(CleanTagNum))
+            {
+                ConvertedTags ^= C_TmxTagColors[CleanTagNum];
+            }
+            else
+            {
+                ConvertedTags ^= "$ccc";
+            }
+            ConvertedTags ^= C_TmxTagMapping[CleanTagNum];
+        }
+        else
+        {
+            ConvertedTags ^= "Tag Error: " ^ CleanTagNum ^ " :(";
+        }
+    }
+    return ConvertedTags;
+}
+
+Text GetFirstChildTextContents(Text _ChildName, CParsingNode _XmlNode)
+{
+    declare Text ChildTextContents = "";
+    if (_XmlNode.GetFirstChild(_ChildName) != Null)
+    {
+        ChildTextContents = _XmlNode.GetFirstChild(_ChildName).TextContents;
+    }
+    return ChildTextContents;
+}
 
 Integer GetCurrentMaxPages()
 {
@@ -346,8 +439,15 @@ Void SetSelectedMapInfo(K_MapInfo _MapInfo)
     ScreenshotQuad.ImageUrl = C_TmxUrlScreenshot ^ _MapInfo.TmxId ^ ScreenshotFakeFilenameFragment;
 
     DetailsMajorLabel.SetText("$z" ^ _MapInfo.Name ^ "$z\n$i$ccc" ^ _MapInfo.Author);
-    DetailsMinorLabel.SetText("$z$cccMap Type: $i" ^ _MapInfo.MapType ^ "$z$ccc\nMood: $i" ^ _MapInfo.Mood ^ "$z$ccc\nDisplay Cost: $i" ^ _MapInfo.DisplayCost ^ "$z$ccc\nLength: $i" ^ _MapInfo.LengthName ^ "$z$ccc\nAwards: $i" ^ _MapInfo.AwardCount);
-    TmxLinkLabel.SetText("$i$l[" ^ C_TmxUrlTrackpage ^ _MapInfo.TmxId ^ "]Trackpage$l");
+    DetailsMinorLabel.SetText(
+        "$z$cccMap Type: $i" ^ _MapInfo.MapType
+        ^ "$z$ccc\nMood: $i" ^ _MapInfo.Mood
+        ^ "$z$ccc\nDisplay Cost: $i" ^ _MapInfo.DisplayCost
+        ^ "$z$ccc\nLength: $i" ^ _MapInfo.LengthName
+        ^ "$z$ccc\nAwards: $i" ^ _MapInfo.AwardCount
+        ^ "$z$ccc\nTags: $i" ^ _MapInfo.TagNames
+    );
+    TmxLinkLabel.SetText("$i$l[" ^ C_TmxUrlTrackpage ^ _MapInfo.TmxId ^ "]Visit on TMX$l");
 }
 
 Void SetButtonList(K_MapInfo[] _MapInfos, Integer _Offset)
@@ -522,16 +622,17 @@ if (G_TmxTracksRequest != Null && G_TmxTracksRequest.IsCompleted)
     foreach (TrackInfo in BotwDocResultsNode.Children)
     {
         G_Tracks[G_CurrentSearch.Query].add(K_MapInfo {
-            TmxId = TrackInfo.GetFirstChild("TrackID").TextContents,
-            Name = TrackInfo.GetFirstChild("GbxMapName").TextContents,
-            NameSafe = TrackInfo.GetFirstChild("Name").TextContents,
-            Author = TrackInfo.GetFirstChild("Username").TextContents,
-            MapType = TrackInfo.GetFirstChild("MapType").TextContents,
-            Mood = TrackInfo.GetFirstChild("Mood").TextContents,
-            DisplayCost = TrackInfo.GetFirstChild("DisplayCost").TextContents,
-            LengthName = TrackInfo.GetFirstChild("LengthName").TextContents,
-            AwardCount = TrackInfo.GetFirstChild("AwardCount").TextContents,
-            HasScreenshot = TrackInfo.GetFirstChild("HasScreenshot").TextContents
+            TmxId           = GetFirstChildTextContents("TrackID", TrackInfo),
+            Name            = GetFirstChildTextContents("GbxMapName", TrackInfo),
+            NameSafe        = GetFirstChildTextContents("Name", TrackInfo),
+            Author          = GetFirstChildTextContents("Username", TrackInfo),
+            MapType         = GetFirstChildTextContents("MapType", TrackInfo),
+            Mood            = GetFirstChildTextContents("Mood", TrackInfo),
+            DisplayCost     = GetFirstChildTextContents("DisplayCost", TrackInfo),
+            LengthName      = GetFirstChildTextContents("LengthName", TrackInfo),
+            AwardCount      = GetFirstChildTextContents("AwardCount", TrackInfo),
+            HasScreenshot   = GetFirstChildTextContents("HasScreenshot", TrackInfo),
+            TagNames        = ConvertTagNumbersToText(GetFirstChildTextContents("Tags", TrackInfo))
         });
     }
     G_RefreshLabel.Show();
