@@ -2,15 +2,24 @@
 #author "skybaxrider"
 #category "MainMenu"
 #perms "paid"
-string version = "1.2.0";
+string version = "1.3.0";
+int logLevel = 0;
 
 #include "Icons.as"
 
+string name = "";
 string layerId = "TmxMenu-a7611529-5c68-462f-9a1b-f491350b6b83";
 
-void log(string msg)
+void log(string msg, int level = 0)
 {
-    print("\\$z[\\$9fcTmxMenu\\$z] " + msg);
+    if (name == "")
+    {
+        name = Meta::ExecutingPlugin().Name;
+    }
+    if (level <= logLevel)
+    {
+        print("\\$z[\\$9fc" + name + "\\$z] " + msg);
+    }
 }
 
 string TrackSearchString(string query, string shortName)
@@ -204,7 +213,7 @@ string CreateManialink()
         <label id="tmxmenu-mapinfo-details-major" posn="3 -52" textfont="GameFontRegular" textsize="2" textcolor="FFF" text="" />
         <label id="tmxmenu-mapinfo-details-minor" posn="3 -65" textfont="GameFontRegular" textsize="1" textcolor="FFF" text="" />
         <label id="tmxmenu-mapinfo-tmxlink" posn="3 -62" textfont="GameFontSmall" textsize="0.5" textcolor="ccc" text="" />
-        <quad id="tmxmenu-mapinfo-screenshot" image="" posn="3 -3" keepratio="Fit" size="67 50" />
+        <quad id="tmxmenu-mapinfo-screenshot" class="tmxmenu-image-base" image="" posn="36.5 -27.5" size="67 49" />
         <quad id="tmxmenu-mapinfo-background" style="Bgs1" substyle="BgList" size="73 120" />
     </frame>
     <label id="tmxmenu-label-versionstring" posn="-145 -66" textprefix="$i$ccc" text="TmxMenu version ?.?.?" textfont="GameFontSmall" textsize="0.25" opacity="0.5" z-index="5" />
@@ -242,6 +251,7 @@ to bypass Angelscript preprocessor
         Text DisplayCost;
         Text LengthName;
         Text AwardCount;
+        Text HasScreenshot;
     }
 
     #Struct K_TracksearchInfo {
@@ -327,8 +337,13 @@ Void SetSelectedMapInfo(K_MapInfo _MapInfo)
 
     // TMX API provides the screenshot from an endpoint without a file extension but manialink
     // is probably looking for a file extension to know what to do with the url so we
-    // add #fake.png to the end of the image url
-    ScreenshotQuad.ImageUrl = C_TmxUrlThumbnail ^ _MapInfo.TmxId ^ "#fake.png";
+    // add #fake.png/webp to the end of the image url
+    declare Text ScreenshotFakeFilenameFragment = "#fake.png";
+    if (_MapInfo.HasScreenshot == "true")
+    {
+        ScreenshotFakeFilenameFragment = "#fake.webp";
+    }
+    ScreenshotQuad.ImageUrl = C_TmxUrlScreenshot ^ _MapInfo.TmxId ^ ScreenshotFakeFilenameFragment;
 
     DetailsMajorLabel.SetText("$z" ^ _MapInfo.Name ^ "$z\n$i$ccc" ^ _MapInfo.Author);
     DetailsMinorLabel.SetText("$z$cccMap Type: $i" ^ _MapInfo.MapType ^ "$z$ccc\nMood: $i" ^ _MapInfo.Mood ^ "$z$ccc\nDisplay Cost: $i" ^ _MapInfo.DisplayCost ^ "$z$ccc\nLength: $i" ^ _MapInfo.LengthName ^ "$z$ccc\nAwards: $i" ^ _MapInfo.AwardCount);
@@ -340,6 +355,7 @@ Void SetButtonList(K_MapInfo[] _MapInfos, Integer _Offset)
     if (G_SelectedMapButton != Null)
     {
         (G_SelectedMapButton as CMlQuad).Opacity = 0.0;
+        G_SelectedMapButton = Null;
     }
     for (Index, 0, G_ButtonListFrames.count-1)
     {
@@ -514,7 +530,8 @@ if (G_TmxTracksRequest != Null && G_TmxTracksRequest.IsCompleted)
             Mood = TrackInfo.GetFirstChild("Mood").TextContents,
             DisplayCost = TrackInfo.GetFirstChild("DisplayCost").TextContents,
             LengthName = TrackInfo.GetFirstChild("LengthName").TextContents,
-            AwardCount = TrackInfo.GetFirstChild("AwardCount").TextContents
+            AwardCount = TrackInfo.GetFirstChild("AwardCount").TextContents,
+            HasScreenshot = TrackInfo.GetFirstChild("HasScreenshot").TextContents
         });
     }
     G_RefreshLabel.Show();
@@ -554,6 +571,7 @@ if (PageIsVisible)
             {
                 if (G_SelectedMap.TmxId != "")
                 {
+                    SendCustomEvent("Event_UpdateLoadingScreen", ["$z" ^ G_SelectedMap.Name ^ "\n\t$z$ccc$i" ^ G_SelectedMap.Author]);
                     TitleControl.PlayMap(C_TmxUrlDownload ^ G_SelectedMap.TmxId, C_MapModeScript, C_MapSettings);
                 }
             }
@@ -669,7 +687,7 @@ main() {
 
 CGameManiaAppTitle@ TryGetManiaAppTitle()
 {
-    log("Entering TryGetManiaAppTitle()");
+    log("Entering TryGetManiaAppTitle()", 1);
     CTrackMania@ app = cast<CTrackMania>(GetApp());
     if (app !is null)
     {
@@ -679,143 +697,123 @@ CGameManiaAppTitle@ TryGetManiaAppTitle()
             CGameManiaAppTitle@ maniaAppTitle = cast<CGameManiaAppTitle>(appMenus.MenuCustom_CurrentManiaApp);
             if (maniaAppTitle !is null)
             {
-                log("Acquired ManiaAppTitle");
+                log("Acquired ManiaAppTitle", 1);
                 return maniaAppTitle;
             }
         }
     }
-    log("Did not acquire ManiaAppTitle");
+    log("Did not acquire ManiaAppTitle", 1);
     return null;
 }
 
 CGameUILayer@ FindOrCreateUILayer(CGameManiaAppTitle@ maniaAppTitle, string searchAttachId)
 {
-    log("Entering TryFindUILayer(maniaAppTitle, " + searchAttachId + ")");
+    log("Entering TryFindUILayer(maniaAppTitle, " + searchAttachId + ")", 1);
     for (uint i = 0; i < maniaAppTitle.UILayers.Length; ++i)
     {
         if (maniaAppTitle.UILayers[i].AttachId == searchAttachId)
         {
-            log("UILayer found");
+            log("UILayer found", 1);
             return maniaAppTitle.UILayers[i];
         }
     }
-    log("UILayer not found, Creating...");
+    log("UILayer not found, Creating...", 1);
     CGameUILayer@ uiLayer = maniaAppTitle.UILayerCreate();
     uiLayer.ManialinkPage = CreateManialink();
     uiLayer.AttachId = searchAttachId;
     uiLayer.IsVisible = false;
-    log("Created UILayer " + searchAttachId);
+    log("Created UILayer " + searchAttachId, 1);
     return uiLayer;
 }
 
 [Setting name="Search 1 Short Name"]
-string Search1_ShortName = "Best of the Week";
-[Setting name="Search 1 Query" description="Set to TMX API search params. \"page\" and \"limit\" should not be specified."]
-string Search1_Query = "mode=4&priord=8";
-
+string Search1_ShortName;
+[Setting name="Search 1 Query" description="Set to TMX API search params. \"limit\" should NOT be specified."]
+string Search1_Query;
 [Setting name="Search 2 Short Name"]
-string Search2_ShortName = "Latest Tracks";
-[Setting name="Search 2 Query" description="Set to TMX API search params. \"page\" and \"limit\" should not be specified."]
-string Search2_Query = "priord=2&mode=2";
-
+string Search2_ShortName;
+[Setting name="Search 2 Query" description="Set to TMX API search params. \"limit\" should NOT be specified."]
+string Search2_Query;
 [Setting name="Search 3 Short Name"]
-string Search3_ShortName = "Recently Awarded";
-[Setting name="Search 3 Query" description="Set to TMX API search params. \"page\" and \"limit\" should not be specified."]
-string Search3_Query = "mode=3&priord=6";
-
+string Search3_ShortName;
+[Setting name="Search 3 Query" description="Set to TMX API search params. \"limit\" should NOT be specified."]
+string Search3_Query;
 [Setting name="Search 4 Short Name"]
-string Search4_ShortName = "Recently Active";
-[Setting name="Search 4 Query" description="Set to TMX API search params. \"page\" and \"limit\" should not be specified."]
-string Search4_Query = "priord=6";
-
+string Search4_ShortName;
+[Setting name="Search 4 Query" description="Set to TMX API search params. \"limit\" should NOT be specified."]
+string Search4_Query;
 [Setting name="Search 5 Short Name"]
-string Search5_ShortName = "RPG Tracks";
-[Setting name="Search 5 Query" description="Set to TMX API search params. \"page\" and \"limit\" should not be specified."]
-string Search5_Query = "priord=2&style=4";
-
+string Search5_ShortName;
+[Setting name="Search 5 Query" description="Set to TMX API search params. \"limit\" should NOT be specified."]
+string Search5_Query;
 [Setting name="Search 6 Short Name"]
-string Search6_ShortName = "LOL Tracks";
-[Setting name="Search 6 Query" description="Set to TMX API search params. \"page\" and \"limit\" should not be specified."]
-string Search6_Query = "priord=2&style=5";
-
+string Search6_ShortName;
+[Setting name="Search 6 Query" description="Set to TMX API search params. \"limit\" should NOT be specified."]
+string Search6_Query;
 [Setting name="Search 7 Short Name"]
-string Search7_ShortName = "PF Tracks";
-[Setting name="Search 7 Query" description="Set to TMX API search params. \"page\" and \"limit\" should not be specified."]
-string Search7_Query = "priord=2&style=6";
-
+string Search7_ShortName;
+[Setting name="Search 7 Query" description="Set to TMX API search params. \"limit\" should NOT be specified."]
+string Search7_Query;
 [Setting name="Search 8 Short Name"]
-string Search8_ShortName = "Speedtech Tracks";
-[Setting name="Search 8 Query" description="Set to TMX API search params. \"page\" and \"limit\" should not be specified."]
-string Search8_Query = "priord=2&style=7";
-
+string Search8_ShortName;
+[Setting name="Search 8 Query" description="Set to TMX API search params. \"limit\" should NOT be specified."]
+string Search8_Query;
 [Setting name="Search 9 Short Name"]
-string Search9_ShortName = "Multilap Tracks";
-[Setting name="Search 9 Query" description="Set to TMX API search params. \"page\" and \"limit\" should not be specified."]
-string Search9_Query = "priord=2&style=8";
-
+string Search9_ShortName;
+[Setting name="Search 9 Query" description="Set to TMX API search params. \"limit\" should NOT be specified."]
+string Search9_Query;
 [Setting name="Search 10 Short Name"]
-string Search10_ShortName = "Offroad Tracks";
-[Setting name="Search 10 Query" description="Set to TMX API search params. \"page\" and \"limit\" should not be specified."]
-string Search10_Query = "priord=2&style=9";
-
+string Search10_ShortName;
+[Setting name="Search 10 Query" description="Set to TMX API search params. \"limit\" should NOT be specified."]
+string Search10_Query;
 [Setting name="Search 11 Short Name"]
-string Search11_ShortName = "Trial Tracks";
-[Setting name="Search 11 Query" description="Set to TMX API search params. \"page\" and \"limit\" should not be specified."]
-string Search11_Query = "priord=2&style=10";
-
+string Search11_ShortName;
+[Setting name="Search 11 Query" description="Set to TMX API search params. \"limit\" should NOT be specified."]
+string Search11_Query;
 [Setting name="Search 12 Short Name"]
-string Search12_ShortName = "Race Tracks";
-[Setting name="Search 12 Query" description="Set to TMX API search params. \"page\" and \"limit\" should not be specified."]
-string Search12_Query = "priord=2&style=1";
-
+string Search12_ShortName;
+[Setting name="Search 12 Query" description="Set to TMX API search params. \"limit\" should NOT be specified."]
+string Search12_Query;
 [Setting name="Search 13 Short Name"]
-string Search13_ShortName = "Fullspeed Tracks";
-[Setting name="Search 13 Query" description="Set to TMX API search params. \"page\" and \"limit\" should not be specified."]
-string Search13_Query = "priord=2&style=2";
-
+string Search13_ShortName;
+[Setting name="Search 13 Query" description="Set to TMX API search params. \"limit\" should NOT be specified."]
+string Search13_Query;
 [Setting name="Search 14 Short Name"]
-string Search14_ShortName = "Tech Tracks";
-[Setting name="Search 14 Query" description="Set to TMX API search params. \"page\" and \"limit\" should not be specified."]
-string Search14_Query = "priord=2&style=3";
-
+string Search14_ShortName;
+[Setting name="Search 14 Query" description="Set to TMX API search params. \"limit\" should NOT be specified."]
+string Search14_Query;
 [Setting name="Search 15 Short Name"]
-string Search15_ShortName = "";
-[Setting name="Search 15 Query" description="Set to TMX API search params. \"page\" and \"limit\" should not be specified."]
-string Search15_Query = "";
-
+string Search15_ShortName;
+[Setting name="Search 15 Query" description="Set to TMX API search params. \"limit\" should NOT be specified."]
+string Search15_Query;
 [Setting name="Search 16 Short Name"]
-string Search16_ShortName = "";
-[Setting name="Search 16 Query" description="Set to TMX API search params. \"page\" and \"limit\" should not be specified."]
-string Search16_Query = "";
-
+string Search16_ShortName;
+[Setting name="Search 16 Query" description="Set to TMX API search params. \"limit\" should NOT be specified."]
+string Search16_Query;
 [Setting name="Search 17 Short Name"]
-string Search17_ShortName = "";
-[Setting name="Search 17 Query" description="Set to TMX API search params. \"page\" and \"limit\" should not be specified."]
-string Search17_Query = "";
-
+string Search17_ShortName;
+[Setting name="Search 17 Query" description="Set to TMX API search params. \"limit\" should NOT be specified."]
+string Search17_Query;
 [Setting name="Search 18 Short Name"]
-string Search18_ShortName = "";
-[Setting name="Search 18 Query" description="Set to TMX API search params. \"page\" and \"limit\" should not be specified."]
-string Search18_Query = "";
-
+string Search18_ShortName;
+[Setting name="Search 18 Query" description="Set to TMX API search params. \"limit\" should NOT be specified."]
+string Search18_Query;
 [Setting name="Search 19 Short Name"]
-string Search19_ShortName = "";
-[Setting name="Search 19 Query" description="Set to TMX API search params. \"page\" and \"limit\" should not be specified."]
-string Search19_Query = "";
-
+string Search19_ShortName;
+[Setting name="Search 19 Query" description="Set to TMX API search params. \"limit\" should NOT be specified."]
+string Search19_Query;
 [Setting name="Search 20 Short Name"]
-string Search20_ShortName = "";
-[Setting name="Search 20 Query" description="Set to TMX API search params. \"page\" and \"limit\" should not be specified."]
-string Search20_Query = "";
-
+string Search20_ShortName;
+[Setting name="Search 20 Query" description="Set to TMX API search params. \"limit\" should NOT be specified."]
+string Search20_Query;
 [Setting name="Search 21 Short Name"]
-string Search21_ShortName = "";
-[Setting name="Search 21 Query" description="Set to TMX API search params. \"page\" and \"limit\" should not be specified."]
-string Search21_Query = "";
+string Search21_ShortName;
+[Setting name="Search 21 Query" description="Set to TMX API search params. \"limit\" should NOT be specified."]
+string Search21_Query;
 
 void OnDisabled()
 {
-    log("Disabling TmxMenu...");
+    log("Disabling " + name + "...");
     auto maniaAppTitle = TryGetManiaAppTitle();
     if (maniaAppTitle !is null)
     {
@@ -838,10 +836,98 @@ void RenderMenu()
     }
 }
 
+void OnSettingsLoad(Settings::Section& section)
+{
+    log("OnSettingsLoad begin", 1);
+    if (Search1_Query == "")
+    {
+        log("Defaulting search 1", 1);
+        Search1_ShortName = "Best of the Week";
+        Search1_Query = "mode=4&priord=8";
+    }
+    if (Search2_Query == "")
+    {
+        log("Defaulting search 2", 1);
+        Search2_ShortName = "Latest Tracks";
+        Search2_Query = "priord=2&mode=2";
+    }
+    if (Search3_Query == "")
+    {
+        log("Defaulting search 3", 1);
+        Search3_ShortName = "Recently Awarded";
+        Search3_Query = "mode=3&priord=6";
+    }
+    if (Search4_Query == "")
+    {
+        log("Defaulting search 4", 1);
+        Search4_ShortName = "Recently Active";
+        Search4_Query = "priord=6";
+    }
+    if (Search5_Query == "")
+    {
+        log("Defaulting search 5", 1);
+        Search5_ShortName = "RPG Tracks";
+        Search5_Query = "priord=2&style=4";
+    }
+    if (Search6_Query == "")
+    {
+        log("Defaulting search 6", 1);
+        Search6_ShortName = "LOL Tracks";
+        Search6_Query = "priord=2&style=5";
+    }
+    if (Search7_Query == "")
+    {
+        log("Defaulting search 7", 1);
+        Search7_ShortName =  "PF Tracks";
+        Search7_Query = "priord=2&style=6";
+    }
+    if (Search8_Query == "")
+    {
+        log("Defaulting search 8", 1);
+        Search8_ShortName = "Speedtech Tracks";
+        Search8_Query = "priord=2&style=7";
+    }
+    if (Search9_Query == "")
+    {
+        log("Defaulting search 9", 1);
+        Search9_ShortName = "Multilap Tracks";
+        Search9_Query = "priord=2&style=8";
+    }
+    if (Search10_Query == "")
+    {
+        log("Defaulting search 10", 1);
+        Search10_ShortName = "Offroad Tracks";
+        Search10_Query = "priord=2&style=9";
+    }
+    if (Search11_Query == "")
+    {
+        log("Defaulting search 11", 1);
+        Search11_ShortName = "Trial Tracks";
+        Search11_Query = "priord=2&style=10";
+    }
+    if (Search12_Query == "")
+    {
+        log("Defaulting search 12", 1);
+        Search12_ShortName = "Race Tracks";
+        Search12_Query = "priord=2&style=1";
+    }
+    if (Search13_Query == "")
+    {
+        log("Defaulting search 13", 1);
+        Search13_ShortName = "Fullspeed Tracks";
+        Search13_Query = "priord=2&style=2";
+    }
+    if (Search14_Query == "")
+    {
+        log("Defaulting search 14", 1);
+        Search14_ShortName = "Tech Tracks";
+        Search14_Query = "priord=2&style=3";
+    }
+}
+
 void Main()
 {
-    log("Initializing TmxMenu version [" + version + "]");
-
+    log("Initializing version [" + version + "]");
     auto maniaAppTitle = TryGetManiaAppTitle();
     if (maniaAppTitle !is null)
     {
@@ -849,7 +935,5 @@ void Main()
         uiLayer.ManialinkPage = CreateManialink();
         uiLayer.IsVisible = false;
     }
-    sleep(1000);
-
-    log("Exit TmxMenu::main()");
+    log("Exit " + name + "::main()", 1);
 }
